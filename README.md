@@ -57,3 +57,22 @@ Contributions can include bug fixes, feature enhancements, documentation improve
 
 By contributing to this project, you agree to release your contributions under the project's [GNU General Public License v3.0](https://github.com/iLVOEWOCK/EssentialsXBE/blob/main/LICENSE).
 
+## To Do
+
+- [ ] Add Timed Teleport
+- [ ] API's
+- [ ] Economy
+- [ ] Warps
+- [ ] Homes
+- [ ] TPA's
+- [ ] Fix /anvil
+- [ ] Fix /back
+- [ ] Fix /afk
+- [ ] Add Remaining EssnetialsX Commands
+- [ ] Ban Lookup
+- [ ] Permission Manager
+- [ ] Server Backups
+- [ ] Vanilla Enchantments
+- [ ] Kits
+- [ ] Potions
+- [ ] /trade
