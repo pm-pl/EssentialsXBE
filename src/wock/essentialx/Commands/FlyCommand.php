@@ -9,6 +9,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginOwned;
 use wock\essentialx\EssentialsX;
+use pocketmine\utils\TextFormat;
 use wock\essentialx\Utils\Utils;
 
 class FlyCommand extends Command implements PluginOwned
@@ -25,7 +26,7 @@ class FlyCommand extends Command implements PluginOwned
     public function execute(CommandSender $sender, string $commandLabel, array $args)
     {
         if (!$sender instanceof Player) {
-            $sender->sendMessage("This command can only be run by a player.");
+            $sender->sendMessage(TextFormat::RED . "This command can only be run by a player.");
             return false;
         }
 
@@ -33,7 +34,7 @@ class FlyCommand extends Command implements PluginOwned
             Utils::toggleFlight($sender);
             return true;
         } else {
-            $sender->sendMessage("§cYou do not have permission to use this command.");
+            $sender->sendMessage(TextFormat::RED . "You do not have permission to use this command.");
             return false;
         }
     }
