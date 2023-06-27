@@ -1,0 +1,41 @@
+name: EssentialsX
+main: wock\essentialx\EssentialsX
+api: 5.0.0
+version: 1.0.0
+author: wockgod
+
+permissions:
+  essentialsx.afk:
+    default: true
+  essentialsx.anvil:
+    default: op
+  essentialsx.back:
+    default: op
+  pocketmine.command.ban:
+    default: op
+  essentialsx.ban.exempt:
+    default: op
+  essentialsx.exp:
+    default: true
+  essentialsx.xp.add:
+    default: op
+  essentialsx.xp.remove:
+    default: op
+  essentialsx.xp.set:
+    default: op
+  essentialsx.xp.show:
+    default: true
+  pocketmine.command.gamemode:
+    default: op
+  essentialsx.fly:
+    default: op
+  essentialsx.spawn:
+    default: true
+  essentialsx.spawn.set:
+    default: op
+  essentialsx.spawn.others:
+    default: op
+  pocketmine.command.banip:
+    default: op
+  essentialsx.condense:
+    default: op
