@@ -61,8 +61,7 @@ class SpawnCommand extends Command implements PluginOwned {
             default:
                 $sender->teleport($sender->getWorld()->getSpawnLocation());
                 Utils::playSound($sender, "mob.enderdragon.flap");
-                $particle = new testSpawn($sender, "minecraft:blue_flame_particle");
-                $particle->spawn();
+                Utils::spawnParticle($sender, "minecraft:blue_flame_particle");
                 $sender->sendMessage(TextFormat::GREEN . "Teleporting to spawn point.");
                 return true;
         }
