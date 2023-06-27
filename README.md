@@ -1,6 +1,6 @@
 ![EssentialsX](https://i.imgur.com/CP4SZpB.png)
 
-This is a port of the popular EssentialsX plugin for PocketMine-MP, a Minecraft: Bedrock Edition server software. EssentialsX is a comprehensive plugin that provides essential commands and features for server administration and player convenience.
+This is an unofficial port of the popular EssentialsX plugin for PocketMine-MP, a Minecraft: Bedrock Edition server software. EssentialsX is a comprehensive plugin that provides essential commands and features for server administration and player convenience.
 
 ## Features
 
