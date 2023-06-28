@@ -12,10 +12,17 @@ use wock\essentialx\{Commands\AnvilCommand,
     Commands\ExpCommand,
     Commands\FlyCommand,
     Commands\GamemodeCommand,
+    Commands\HealCommand,
+    Commands\KitCommand,
+    Commands\ReloadCommand,
     Commands\SpawnCommand,
+    Enchantments\BaneOfArthropodsEnchantment,
+    Enchantments\FortuneEnchantment,
+    Enchantments\LootingEnchantment,
+    Enchantments\SmiteEnchantment,
     Events\EssentialsXEvent,
     Commands\AfkCommand,
-    Commands\ReloadCommand};
+    Events\VanillaEnchanatmentEvent};
 
 class EssentialsX extends PluginBase {
 
@@ -25,6 +32,16 @@ class EssentialsX extends PluginBase {
     public function onLoad(): void
     {
         self::$instance = $this;
+        $enchants = [
+            new FortuneEnchantment(),
+            new LootingEnchantment(),
+            new SmiteEnchantment(),
+            new BaneOfArthropodsEnchantment()
+        ];
+        foreach ($enchants as $enchant) {
+            EnchantmentIdMap::getInstance()->register($enchant->getMcpeId(), $enchant);
+            StringToEnchantmentParser::getInstance()->register($enchant->getId(), fn() => $enchant);
+        }
     }
     public function onEnable(): void
     {
@@ -51,7 +68,9 @@ class EssentialsX extends PluginBase {
             new SpawnCommand($this),
             new BanIPCommand($this),
             new CondenseCommand($this),
-            new ReloadCommand()
+            new ReloadCommand(),
+            new KitCommand(),
+            new HealCommand()
         ]);
     }
 
@@ -65,6 +84,7 @@ class EssentialsX extends PluginBase {
         $pluginMngr = $this->getServer()->getPluginManager();
 
         $pluginMngr->registerEvents(new EssentialsXEvent(), $this);
+        $pluginMngr->registerEvents(new VanillaEnchanatmentEvent(), $this);
     }
 
     public static function getInstance(): EssentialsX
