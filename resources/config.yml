@@ -157,3 +157,7 @@ looting.entities:
     - "ghast_tear" # Ghast Tear drop
   blaze:
     - "blaze_rod" # Blaze Rod drop
+
+# Near Radius
+# The default radius with /near
+near-radius: 200
