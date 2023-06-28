@@ -76,4 +76,4 @@ By contributing to this project, you agree to release your contributions under t
 - [ ] Kits
 - [ ] Potions
 - [ ] /trade
-- [ ] Make Fly messages configurable
+- [x] Make Fly messages configurable
