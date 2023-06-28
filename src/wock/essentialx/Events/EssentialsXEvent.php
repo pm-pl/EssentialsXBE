@@ -77,13 +77,20 @@ class EssentialsXEvent implements Listener {
         $target = $event->getEntity();
 
         if ($damager instanceof Player && $target instanceof Player) {
-            Utils::toggleFlight($damager, true);
-            Utils::toggleFlight($target, true);
+            if ($damager->isFlying()) {
+                Utils::toggleFlight($damager, true);
+            }
+            if ($target->isFlying()) {
+                Utils::toggleFlight($target, true);
+            }
         } elseif ($damager instanceof Player) {
-            Utils::toggleFlight($damager, true);
+            if ($damager->isFlying()) {
+                Utils::toggleFlight($damager, true);
+            }
         } elseif ($target instanceof Player) {
-            Utils::toggleFlight($target, true);
+            if ($target->isFlying()) {
+                Utils::toggleFlight($target, true);
+            }
         }
     }
-
 }
