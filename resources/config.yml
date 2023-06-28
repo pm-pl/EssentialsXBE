@@ -1,7 +1,6 @@
 # EssentialsX Pocketmine-MP port configuration!
-# Made by: Wockgod 
-# Contributers: 
-# Discords: `woccck`
+# Made by Wockgod
+# Discord: `woccck`
 # You can use the `&` symbol throughout this config for color codes.
 
 # Ban Information
@@ -42,3 +41,119 @@ xp:
 fly:
   disabled: "&r&c&l[!] &r&cFly Disabled"
   enabled: "&r&a&l[!] &r&aFly Enabled"
+
+# Kits Configuration
+
+kits:
+  tools:
+    cooldown: 10
+    items:
+      - item: "stone_sword"
+      - item: "stone_shovel"
+      - item: "stone_pickaxe"
+      - item: "stone_axe"
+  dtools:
+    cooldown: 600
+    items:
+      - item: "diamond_pickaxe"
+        name: "&r&4Gigadrill"
+        lore:
+          - "&r&7The drill that"
+          - "&r&7pierces | the heavens"
+        enchantments:
+          - enchantment: "efficiency"
+            level: 1
+          - enchantment: "unbreaking"
+            level: 1
+          - enchantment: "fortune"
+            level: 1
+      - item: "diamond_shovel"
+        name: "&rDwarf"
+        lore:
+          - "&r&7dwarf"
+          - "&r&7diggy"
+          - "&r&7hole"
+        enchantments:
+          - enchantment: "efficiency"
+            level: 3
+      - item: "leather_helmet"
+        name: "&rTop hat"
+        lore:
+          - "&r&7Good day, Good day"
+        color: "255,255,255" # RGB
+        enchantments:
+          - enchantment: "unbreaking"
+            level: 3
+      - item: "diamond_axe"
+
+
+# Vanilla Enchantments
+# Ores that fortune activates on
+fortune.blocks:
+  - coal_ore
+  - iron_ore
+  - gold_ore
+  - diamond_ore
+  - leaves
+  - nether_quartz_ore
+  - glowstone
+  - redstone_ore
+  - emerald_ore
+  - glowing_redstone_ore
+
+# Looting Rates
+
+# Entities that looting will work on.
+looting.entities:
+  drop_multiplier: 2
+  zombie:
+    - "rotten_flesh" # Rotten Flesh drop
+  skeleton:
+    - "bone" # Bone drop
+    - "arrow" # Arrow drop
+  creeper:
+    - "gunpowder" # Gunpowder drop
+  spider:
+    - "string" # String drop
+    - "spider_eye" # Spider Eye drop
+  enderman:
+    - "ender_pearl" # Ender Pearl drop
+  witch:
+    - "glass_bottle" # Glass Bottle drop
+    - "stick" # Stick drop
+    - "redstone" # Redstone drop
+  chicken:
+    - "feather" # Feather drop
+    - "raw_chicken" # Raw Chicken drop
+  cow:
+    - "leather" # Leather drop
+    - "beef" # Beef drop
+  pig:
+    - "porkchop" # Porkchop drop
+  sheep:
+    - "wool" # Wool drop
+  rabbit:
+    - "rabbit_hide" # Rabbit Hide drop
+    - "rabbit_foot" # Rabbit Foot drop
+    - "rabbit" # Raw Rabbit drop
+  horse:
+    - "leather" # Leather drop
+  polar_bear:
+    - "fish" # Raw Fish drop
+  wolf:
+    - "bone" # Bone drop
+    - "rotten_flesh" # Rotten Flesh drop
+  ocelot:
+    - "fish" # Raw Fish drop
+  mooshroom:
+    - "red_mushroom" # Red Mushroom drop
+    - "brown_mushroom" # Brown Mushroom drop
+    - "beef" # Beef drop
+  slime:
+    - "slime_ball" # Slime Ball drop
+  magma_cube:
+    - "magma_cream" # Magma Cream drop
+  ghast:
+    - "ghast_tear" # Ghast Tear drop
+  blaze:
+    - "blaze_rod" # Blaze Rod drop
