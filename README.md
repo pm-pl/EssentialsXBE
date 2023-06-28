@@ -72,7 +72,10 @@ By contributing to this project, you agree to release your contributions under t
 - [ ] Ban Lookup
 - [ ] Permission Manager
 - [ ] Server Backups
-- [ ] Vanilla Enchantments
+- [x] Fortune Enchantment
+- [ ] Smite Enchantment
+- [ ] Looting Enchantment
+- [ ] Bane of Arthropods
 - [ ] Kits
 - [ ] Potions
 - [ ] /trade
