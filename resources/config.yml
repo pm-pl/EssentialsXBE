@@ -37,3 +37,8 @@ xp:
   show_info: "{player} §r§6has §r§c{xp} EXP §r§6(level §r§c{level}§r§6) §r§6and needs {levelup} more exp to level up."
   invalid_command: "&cUsage: /xp [add|remove|set|show] <player> <amount>"
 
+# Fly Configuration
+
+fly:
+  disabled: "&r&c&l[!] &r&cFly Disabled"
+  enabled: "&r&a&l[!] &r&aFly Enabled"
