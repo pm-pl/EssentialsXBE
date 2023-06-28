@@ -49,3 +49,5 @@ permissions:
     default: op
   essentialsx.banlookup:
     default: op
+  essentialsx.near:
+    default: op
