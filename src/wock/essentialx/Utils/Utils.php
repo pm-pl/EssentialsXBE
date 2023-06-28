@@ -6,6 +6,7 @@ use pocketmine\entity\Entity;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\network\mcpe\protocol\SpawnParticleEffectPacket;
 use pocketmine\player\Player;
+use pocketmine\utils\Config;
 
 class Utils {
 
@@ -29,18 +30,23 @@ class Utils {
         if ($forceOff) {
             $player->setAllowFlight(false);
             $player->setFlying(false);
-            $player->resetFallDistance(); // Reset fall distance when flight is turned off
-            $player->sendMessage("§cYou can no longer fly.");
+            $player->resetFallDistance(); 
+            $message = self::getConfigMessage()->getNested("fly.disabled", "§cYou can no longer fly.");
+            $message = str_replace("&", "§", $message);
+            $player->sendMessage($message);
         } else {
             if (!$player->getAllowFlight()) {
                 $player->setAllowFlight(true);
-                $player->sendMessage("§aYou can now fly!");
+                $message = self::getConfigMessage()->getNested("fly.enabled", "§sYou can now fly.");
+                $message = str_replace("&", "§", $message);
+                $player->sendMessage($message);    
             } else {
                 $player->setAllowFlight(false);
                 $player->setFlying(false);
-                $player->resetFallDistance(); // Reset fall distance when flight is turned off
-                $player->sendMessage("§cYou can no longer fly.");
-            }
+                $player->resetFallDistance(); 
+                $message = self::getConfigMessage()->getNested("fly.disabled", "§cYou can no longer fly.");
+                $message = str_replace("&", "§", $message);
+                $player->sendMessage($message);            }
         }
     }
 
@@ -86,5 +92,9 @@ class Utils {
                 }
             }
         }
+    }
+
+    public static function getConfigMessage(): Config {
+        return new Config(EssentialsX::getInstance()->getDataFolder() . "config.yml", Config::YAML);
     }
 }
