@@ -72,10 +72,10 @@ By contributing to this project, you agree to release your contributions under t
 - [ ] Ban Lookup
 - [ ] Permission Manager
 - [ ] Server Backups
-- [x] Fortune Enchantment
-- [x] Smite Enchantment
-- [x] Looting Enchantment
-- [x] Bane of Arthropods
+- [x] Fortune Enchantment [Credits](https://github.com/Taylor-pm-pl/VanillaEC/tree/5088b9835f65303546209d0b1670723cc022d4aa/)
+- [x] Smite Enchantment [Credits](https://github.com/Taylor-pm-pl/VanillaEC/tree/5088b9835f65303546209d0b1670723cc022d4aa/)
+- [x] Looting Enchantment [Credits](https://github.com/Taylor-pm-pl/VanillaEC/tree/5088b9835f65303546209d0b1670723cc022d4aa/)
+- [x] Bane of Arthropods [Credits](https://github.com/Taylor-pm-pl/VanillaEC/tree/5088b9835f65303546209d0b1670723cc022d4aa/)
 - [x] Kits
 - [ ] Potions
 - [ ] /trade
