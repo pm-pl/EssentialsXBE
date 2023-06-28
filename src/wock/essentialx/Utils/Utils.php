@@ -126,7 +126,7 @@ class Utils {
         return trim($timeString);
     }
 
-    public static function getConfigMessage(): Config {
+    public static function getConfig(): Config {
         return new Config(EssentialsX::getInstance()->getDataFolder() . "config.yml", Config::YAML);
     }
 }
