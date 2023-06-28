@@ -94,6 +94,38 @@ class Utils {
         }
     }
 
+        public static function formatTime(int $seconds): string
+    {
+        $years = floor($seconds / 31536000);
+        $months = floor(($seconds % 31536000) / 2592000);
+        $days = floor((($seconds % 31536000) % 2592000) / 86400);
+        $hours = floor(((($seconds % 31536000) % 2592000) % 86400) / 3600);
+        $minutes = floor((((($seconds % 31536000) % 2592000) % 86400) % 3600) / 60);
+        $seconds = (((($seconds % 31536000) % 2592000) % 86400) % 3600) % 60;
+
+        $timeString = "";
+        if ($years > 0) {
+            $timeString .= $years . "y ";
+        }
+        if ($months > 0) {
+            $timeString .= $months . "mo ";
+        }
+        if ($days > 0) {
+            $timeString .= $days . "d ";
+        }
+        if ($hours > 0) {
+            $timeString .= $hours . "h ";
+        }
+        if ($minutes > 0) {
+            $timeString .= $minutes . "m ";
+        }
+        if ($seconds > 0) {
+            $timeString .= $seconds . "s";
+        }
+
+        return trim($timeString);
+    }
+
     public static function getConfigMessage(): Config {
         return new Config(EssentialsX::getInstance()->getDataFolder() . "config.yml", Config::YAML);
     }
