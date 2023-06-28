@@ -39,3 +39,11 @@ permissions:
     default: op
   essentialsx.condense:
     default: op
+  essentialsx.reload:
+    default: op
+  essentialsx.kit:
+    default: true
+  essentialsx.kit.give:
+    default: op
+  essentialsx.heal:
+    default: op
