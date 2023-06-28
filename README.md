@@ -73,10 +73,10 @@ By contributing to this project, you agree to release your contributions under t
 - [ ] Permission Manager
 - [ ] Server Backups
 - [x] Fortune Enchantment
-- [ ] Smite Enchantment
-- [ ] Looting Enchantment
-- [ ] Bane of Arthropods
-- [ ] Kits
+- [x] Smite Enchantment
+- [x] Looting Enchantment
+- [x] Bane of Arthropods
+- [x] Kits
 - [ ] Potions
 - [ ] /trade
 - [x] Make Fly messages configurable
