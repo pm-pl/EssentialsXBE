@@ -14,7 +14,8 @@ use wock\essentialx\{Commands\AnvilCommand,
     Commands\GamemodeCommand,
     Commands\SpawnCommand,
     Events\EssentialsXEvent,
-    Commands\AfkCommand};
+    Commands\AfkCommand,
+    Commands\ReloadCommand};
 
 class EssentialsX extends PluginBase {
 
@@ -49,7 +50,8 @@ class EssentialsX extends PluginBase {
             new FlyCommand(),
             new SpawnCommand($this),
             new BanIPCommand($this),
-            new CondenseCommand($this)
+            new CondenseCommand($this),
+            new ReloadCommand()
         ]);
     }
 
