@@ -32,6 +32,7 @@ class ReloadCommand extends Command implements PluginOwned
 
         if ($sender->hasPermission("essentialsx.reload")) {
             Utils::getConfigMessage()->reload();
+            $sender->sendMessage(TextFormat::GREEN . "Successfully reloaded EssentialsX configuration");
             return true;
         } else {
             $sender->sendMessage(TextFormat::RED . "You do not have permission to use this command.");
