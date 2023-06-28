@@ -16,6 +16,7 @@ use wock\essentialx\{Commands\AnvilCommand,
     Commands\KitCommand,
     Commands\ReloadCommand,
     Commands\SpawnCommand,
+    Commands\BanLookupCommand,                 
     Enchantments\BaneOfArthropodsEnchantment,
     Enchantments\FortuneEnchantment,
     Enchantments\LootingEnchantment,
@@ -70,7 +71,8 @@ class EssentialsX extends PluginBase {
             new CondenseCommand($this),
             new ReloadCommand(),
             new KitCommand(),
-            new HealCommand()
+            new HealCommand(),
+            new BanLookupCommand($this)
         ]);
     }
 
