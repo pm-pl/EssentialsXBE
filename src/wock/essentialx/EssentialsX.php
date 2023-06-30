@@ -22,6 +22,7 @@ use wock\essentialx\{Commands\AnvilCommand,
     Enchantments\FortuneEnchantment,
     Enchantments\LootingEnchantment,
     Enchantments\SmiteEnchantment,
+    Enchantments\DepthStriderEnchantment,
     Events\EssentialsXEvent,
     Commands\AfkCommand,
     Events\VanillaEnchanatmentEvent};
@@ -38,7 +39,8 @@ class EssentialsX extends PluginBase {
             new FortuneEnchantment(),
             new LootingEnchantment(),
             new SmiteEnchantment(),
-            new BaneOfArthropodsEnchantment()
+            new BaneOfArthropodsEnchantment(),
+            new DepthStriderEnchantment
         ];
         foreach ($enchants as $enchant) {
             EnchantmentIdMap::getInstance()->register($enchant->getMcpeId(), $enchant);
