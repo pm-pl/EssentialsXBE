@@ -178,7 +178,7 @@ class VanillaEnchanatmentEvent implements Listener {
         $item = $player->getArmorInventory()->getBoots();
         $depthStriderEnchantment = new DepthStriderEnchantment();
 
-        if ($item !== null && $item=>hasEnchantment(EnchantmentIdMap::getInstance()->fromId($depthStriderEnchantment->getMcpeId()))) {
+        if ($item !== null && $item->hasEnchantment(EnchantmentIdMap::getInstance()->fromId($depthStriderEnchantment->getMcpeId()))) {
                         $level = $item->getEnchantmentLevel(EnchantmentIdMap::getInstance()->fromId($depthStriderEnchantment->getMcpeId()));
 
             if ($player->isSwimming()) {
