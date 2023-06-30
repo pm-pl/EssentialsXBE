@@ -19,6 +19,7 @@ use wock\essentialx\Enchantments\BaneOfArthropodsEnchantment;
 use wock\essentialx\Enchantments\FortuneEnchantment;
 use wock\essentialx\Enchantments\LootingEnchantment;
 use wock\essentialx\Enchantments\SmiteEnchantment;
+use wock\essentialx\Enchantments\DepthStriderEnchant;
 use wock\essentialx\Utils\Utils;
 
 class VanillaEnchanatmentEvent implements Listener {
@@ -164,6 +165,31 @@ class VanillaEnchanatmentEvent implements Listener {
 
         if ($arrow::getNetworkTypeId() == EntityIds::ARROW) {
             $event->setForce($event->getForce() + 0.95);
+        }
+    }
+
+    /**
+     * @param PlayerMoveEvent $event
+     */
+     public function onPlayerMove(PlayerMoveEvent $event): void 
+    {
+        $player = $event->getPlayer();
+        $item = $player->getArmorInventory()->getBoots();
+        $depthStriderEnchantment = new DepthStriderEnchantment();
+
+        if ($item !== null && $item=>hasEnchantment(EnchantmentIdMap::getInstance()->fromId($depthStriderEnchantment->getMcpeId()))) {
+                        $level = $item->getEnchantmentLevel(EnchantmentIdMap::getInstance()->fromId($depthStriderEnchantment->getMcpeId()));
+
+            if ($player->isSwimming()) {
+                $speed = 0.1 + ($level * 0.07);
+                $player->setMovementSpeed($speed);
+            }
+            if ($player->isUnderwater()) {
+                $speed = 0.05 + ($level * 0.03);
+                $player->setMovementSpeed($speed);
+            } else {
+                $player->setMovementSpeed(0.1);
+            }
         }
     }
 }
