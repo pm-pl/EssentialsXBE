@@ -1,6 +1,6 @@
 <?php
 
-namespace wock\FantasyCloud\VanillaEnchantments;
+namespace wock\essentialx\VanillaEnchantments;
 
 use pocketmine\data\bedrock\EnchantmentIds;
 use pocketmine\item\Armor;
