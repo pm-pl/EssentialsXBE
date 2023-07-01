@@ -10,6 +10,7 @@ use pocketmine\Server;
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
 use wock\essentialx\EssentialsX;
+use wock\essentialx\Utils\Utils;
 
 class BanCommand extends Command implements PluginOwned {
 
