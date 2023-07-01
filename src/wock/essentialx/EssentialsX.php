@@ -86,7 +86,7 @@ class EssentialsX extends PluginBase {
             new FeedCommand(),
             new ItemDBCommand(),
             new GiveCommand(),
-            new TempBanCommand($this),
+            //new TempBanCommand($this),
         ]);
     }
 
