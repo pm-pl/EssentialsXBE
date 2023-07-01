@@ -89,28 +89,6 @@ class EssentialsXEvent implements Listener {
             $player->kick(TextFormat::RED . "You are banned from this server.\nReason: " . $banReason);
         }
     }
-    
-    public function onPlayerLogin(PlayerLoginEvent $event): void {
-        $player = $event->getPlayer();
-        $name = $player->getName();
-        $playerip = $player->getServer()->getIp();
-        $banList = Server::getInstance()->getNameBans();
-        $banListIps = Server::getInstance()->getIPBans();
-
-        if ($banList->isBanned($name)) {
-            $banEntry = $banList->getEntry($name);
-            $banReason = $banEntry->getReason();
-
-            $player->kick(TextFormat::RED . "You are banned from this server.\nReason: " . $banReason);
-        }
-
-        if ($banListIps->isBanned($playerip)) {
-            $banEntryIp = $banListIps->getEntry($playerip);
-            $banReason = $banEntryIp->getReason();
-
-            $player->kick(TextFormat::RED . "You are banned from this server.\nReason: " . $banReason);
-        }
-    }
 
     public function onDeath(PlayerDeathEvent $event) {
         $player = $event->getPlayer();
