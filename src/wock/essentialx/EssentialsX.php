@@ -36,6 +36,8 @@ class EssentialsX extends PluginBase {
     /** @var EssentialsX */
     private static EssentialsX $instance;
 
+    public const NOPERMISSION = TextFormat::DARK_RED . "You do not have access to that command.";
+    
     public function onLoad(): void
     {
         self::$instance = $this;
