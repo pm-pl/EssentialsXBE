@@ -22,30 +22,25 @@ class HealCommand extends Command {
 
     public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
-        if(!$sender->hasPermission("essentialsx.heal")) {
-            $sender->sendMessage(TextFormat::RED . "You do not have permission to use this command.");
-            return false;
-        }
         if (!$sender instanceof Player) {
             $sender->sendMessage(TextFormat::RED . "You must run this command in-game");
             return false;
         }
 
-            if(isset($args[0])) {
-                $playerName = $args[0];
-            } else {
-                $sender->sendMessage(TextFormat::RED . "Please specify a player to heal.");
-                return false;
-            }
+        if (isset($args[0])) {
+            $playerName = $args[0];
+        } else {
+            $sender->sendMessage(TextFormat::RED . "Please specify a player to heal.");
+            return false;
         }
 
-        if(!$this->hasCooldown($sender)) {
-            if($playerName === $sender->getName()) {
+        if (!$this->hasCooldown($sender)) {
+            if ($playerName === $sender->getName()) {
                 $sender->setHealth($sender->getMaxHealth());
                 $sender->sendMessage(TextFormat::GREEN . "You have been healed.");
             } else {
                 $player = Server::getInstance()->getPlayerByPrefix($playerName);
-                if($player instanceof Player) {
+                if ($player instanceof Player) {
                     $player->setHealth($player->getMaxHealth());
                     $player->sendMessage(TextFormat::GREEN . "You have been healed by " . $sender->getName() . ".");
                     $sender->sendMessage(TextFormat::GREEN . "You have healed " . $player->getName() . ".");
@@ -62,7 +57,7 @@ class HealCommand extends Command {
 
         return true;
     }
-
+    
     private function hasCooldown(Player $player): bool
     {
         $name = strtolower($player->getName());
