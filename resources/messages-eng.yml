@@ -5,11 +5,9 @@ ban-format: "&cYou have been banned for &6{reason}&c!"
 ban-message: "&c{user} has been banned from the server."
 
 ipbanmessage:
-  messages:
-    - "Player {name} has been banned from the server."
-    - "The ban was issued by {admin}."
-    - "The reason for the ban is {reason}."
-
+  defaultbanreason: "Default ban reason"
+  banmessage: "You have been banned for: {reason}"
+  
 # Gamemode Messages
 # Tags: {player}, {target_player}, {gamemode}
 gamemode:
