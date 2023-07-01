@@ -31,20 +31,20 @@ class Utils {
             $player->setAllowFlight(false);
             $player->setFlying(false);
             $player->resetFallDistance(); 
-            $message = self::getConfigMessage()->getNested("fly.disabled", "§cYou can no longer fly.");
+            $message = self::getEngMsgConfig()->getNested("fly.disabled", "§cYou can no longer fly.");
             $message = str_replace("&", "§", $message);
             $player->sendMessage($message);
         } else {
             if (!$player->getAllowFlight()) {
                 $player->setAllowFlight(true);
-                $message = self::getConfigMessage()->getNested("fly.enabled", "§sYou can now fly.");
+                $message = self::getEngMsgConfig()->getNested("fly.enabled", "§sYou can now fly.");
                 $message = str_replace("&", "§", $message);
                 $player->sendMessage($message);    
             } else {
                 $player->setAllowFlight(false);
                 $player->setFlying(false);
                 $player->resetFallDistance(); 
-                $message = self::getConfigMessage()->getNested("fly.disabled", "§cYou can no longer fly.");
+                $message = self::getEngMsgConfig()->getNested("fly.disabled", "§cYou can no longer fly.");
                 $message = str_replace("&", "§", $message);
                 $player->sendMessage($message);            }
         }
@@ -128,5 +128,13 @@ class Utils {
 
     public static function getConfig(): Config {
         return new Config(EssentialsX::getInstance()->getDataFolder() . "config.yml", Config::YAML);
+    }
+
+    public static function getEngMsgConfig(): Config {
+        return new Config(EssentialsX::getInstance()->getDataFolder() . "messages-eng", Config::YAML);
+    }
+
+    public static function getKitConfig(): Config {
+        return new Config(EssentialsX::getInstance()->getDataFolder() . "kits.yml", Config::YAML);
     }
 }
