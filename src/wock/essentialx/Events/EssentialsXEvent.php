@@ -21,6 +21,73 @@ class EssentialsXEvent implements Listener {
 
     private array $lastTeleportPositions = [];
 
+    public function onJoin(PlayerJoinEvent $event): void {
+        $player = $event->getPlayer();
+        $displayname = $player->getDisplayName();
+        $nametag = $player->getNameTag();
+        $name = $player->getName();
+        $config = Utils::getEngMsgConfig();
+
+        $joinConnect = $config->getNested("join.connect", "&r&a{nametag} has joined the server!");
+        $joinConnect = str_replace("{name}", $name, $joinConnect);
+        $joinConnect = str_replace("{display_name}", $displayname, $joinConnect);
+        $joinConnect = str_replace("{nametag}", $nametag, $joinConnect);
+
+        $event->setJoinMessage(TextFormat::colorize($joinConnect));
+
+        $joinMessage = $config->getNested("join.messages");
+        $messages = [];
+
+        if ($joinMessage !== null) {
+            $messages = str_split($joinMessage, "\n");
+        }
+
+        foreach ($messages as $message) {
+            $message = str_replace("{name}", $name, $message);
+            $message = str_replace("{display_name}", $displayname, $message);
+            $message = str_replace("{nametag}", $nametag, $message);
+            $player->sendMessage(TextFormat::colorize($message));
+        }
+    }
+
+    public function onQuit(PlayerQuitEvent $event): void{
+        $player = $event->getPlayer();
+        $displayname = $player->getDisplayName();
+        $nametag = $player->getNameTag();
+        $name = $player->getName();
+
+        $config = Utils::getEngMsgConfig();
+
+        $quitMessage = $config->getNested("quit.disconnect", "&r&c{nametag} has disconnected from the server!");
+        $quitMessage = str_replace("{name}", $name, $quitMessage);
+        $quitMessage = str_replace("{display_name}", $displayname, $quitMessage);
+        $quitMessage = str_replace("{nametag}", $nametag, $quitMessage);
+
+        $event->setQuitMessage(TextFormat::colorize($quitMessage));
+    }
+
+    public function onPlayerLogin(PlayerLoginEvent $event): void {
+        $player = $event->getPlayer();
+        $name = $player->getName();
+        $playerip = $player->getServer()->getIp();
+        $banList = Server::getInstance()->getNameBans();
+        $banListIps = Server::getInstance()->getIPBans();
+
+        if ($banList->isBanned($name)) {
+            $banEntry = $banList->getEntry($name);
+            $banReason = $banEntry->getReason();
+
+            $player->kick(TextFormat::RED . "You are banned from this server.\nReason: " . $banReason);
+        }
+
+        if ($banListIps->isBanned($playerip)) {
+            $banEntryIp = $banListIps->getEntry($playerip);
+            $banReason = $banEntryIp->getReason();
+
+            $player->kick(TextFormat::RED . "You are banned from this server.\nReason: " . $banReason);
+        }
+    }
+    
     public function onPlayerLogin(PlayerLoginEvent $event): void {
         $player = $event->getPlayer();
         $name = $player->getName();
