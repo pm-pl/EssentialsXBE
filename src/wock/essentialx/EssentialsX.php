@@ -8,28 +8,28 @@ use wock\essentialx\{Commands\AnvilCommand,
     Commands\BackCommand,
     Commands\BanCommand,
     Commands\BanIPCommand,
+    Commands\BanLookupCommand,
     Commands\CondenseCommand,
     Commands\ExpCommand,
     Commands\FeedCommand,
     Commands\FlyCommand,
     Commands\GamemodeCommand,
+    Commands\GiveCommand,
     Commands\HealCommand,
+    Commands\ItemDBCommand,
     Commands\KitCommand,
-    Commands\ReloadCommand,
-    Commands\SpawnCommand,
     Commands\NearCommand,
-    Commands\BanLookupCommand,  
     Commands\ReloadCommand,
     Commands\SpawnCommand,
-    Commands\TempBanCommand                 
+    Commands\TempBanCommand,
     Enchantments\BaneOfArthropodsEnchantment,
     Enchantments\FortuneEnchantment,
     Enchantments\LootingEnchantment,
     Enchantments\SmiteEnchantment,
-    Enchantments\DepthStriderEnchantment,
     Events\EssentialsXEvent,
     Commands\AfkCommand,
     Events\VanillaEnchanatmentEvent};
+use pocketmine\utils\TextFormat;
 
 class EssentialsX extends PluginBase {
 
