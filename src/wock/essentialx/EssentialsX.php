@@ -17,7 +17,11 @@ use wock\essentialx\{Commands\AnvilCommand,
     Commands\ReloadCommand,
     Commands\SpawnCommand,
     Commands\NearCommand,
-    Commands\BanLookupCommand,                 
+    Commands\BanLookupCommand,  
+    Commands\ReloadCommand,
+    Commands\SpawnCommand,
+    Commands\TempBanCommand
+    Commands\FeedCommand,                 
     Enchantments\BaneOfArthropodsEnchantment,
     Enchantments\FortuneEnchantment,
     Enchantments\LootingEnchantment,
@@ -76,7 +80,11 @@ class EssentialsX extends PluginBase {
             new KitCommand(),
             new HealCommand(),
             new BanLookupCommand($this).
-            new NearCommand($this)
+            new NearCommand($this),
+            new FeedCommand(),
+            new ItemDBCommand(),
+            new GiveCommand(),
+            new TempBanCommand($this),
         ]);
     }
 
