@@ -31,9 +31,6 @@ class HealCommand extends Command {
             return false;
         }
 
-        if($sender instanceof Player) {
-            $playerName = $sender->getName();
-        } else {
             if(isset($args[0])) {
                 $playerName = $args[0];
             } else {
