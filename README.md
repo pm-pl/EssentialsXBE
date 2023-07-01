@@ -80,3 +80,5 @@ By contributing to this project, you agree to release your contributions under t
 - [ ] Potions
 - [ ] /trade
 - [x] Make Fly messages configurable
+- [ ] Move messages into a messages.yml configuration
+- [ ] Move kits into a separate kits.yml configuration
