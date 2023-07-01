@@ -11,6 +11,7 @@ use pocketmine\Server;
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
 use wock\essentialx\EssentialsX;
+use wock\essentialx\Utils\Utils;
 
 class BanIPCommand extends Command implements PluginOwned {
 
@@ -20,6 +21,7 @@ class BanIPCommand extends Command implements PluginOwned {
     public function __construct(EssentialsX $plugin){
         parent::__construct("banip", "Ban a player's ip from the server'", "/banip <player>");
         $this->setPermission("pocketmine.command.banip");
+        $this->setPermissionMessage(EssentialsX::NOPERMISSION);
         $this->plugin = $plugin;
     }
 
@@ -34,8 +36,9 @@ class BanIPCommand extends Command implements PluginOwned {
             return false;
         }
 
+        $config = Utils::getEngMsgConfig();
         $ipAddress = $args[0];
-        $banReason = isset($args[1]) ? implode(" ", array_slice($args, 1)) : "default ban reason";
+        $banReason = isset($args[1]) ? implode(" ", array_slice($args, 1)) : $config->get("ipban.defaultbanreason");
         $senderName = $sender->getName();
 
         $banList = Server::getInstance()->getIPBans();
@@ -47,7 +50,7 @@ class BanIPCommand extends Command implements PluginOwned {
         $banList->addBan($ipAddress, $banReason, null, $senderName);
         foreach (Server::getInstance()->getOnlinePlayers() as $player) {
             if ($player->getServer()->getIp() === $ipAddress) {
-                $player->kick(TextFormat::RED . "You have been banned. Reason: " . $banReason);
+                $player->kick(str_replace("{reason}", $banReason, $config->get("ipban.banmessage")));
             }
         }
 
