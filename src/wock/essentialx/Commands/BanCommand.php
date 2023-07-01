@@ -53,7 +53,7 @@ class BanCommand extends Command implements PluginOwned {
         $senderName = $sender->getName();
         $banReason = isset($args[1]) ? implode(" ", array_slice($args, 1)) : "default ban reason";
 
-        $config = new Config(EssentialsX::getInstance()->getDataFolder() . "config.yml", Config::YAML);
+        $config = Utils::getEngMsgConfig();
 
         $banFormat = $config->get("ban-format", "Ban Format");
         $banFormat = str_replace("&", "§", $banFormat);
