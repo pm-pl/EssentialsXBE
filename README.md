@@ -76,6 +76,7 @@ By contributing to this project, you agree to release your contributions under t
 - [x] Smite Enchantment [Credits](https://github.com/Taylor-pm-pl/VanillaEC/tree/5088b9835f65303546209d0b1670723cc022d4aa/)
 - [x] Looting Enchantment [Credits](https://github.com/Taylor-pm-pl/VanillaEC/tree/5088b9835f65303546209d0b1670723cc022d4aa/)
 - [x] Bane of Arthropods [Credits](https://github.com/Taylor-pm-pl/VanillaEC/tree/5088b9835f65303546209d0b1670723cc022d4aa/)
+- [x] Depth Strider
 - [x] Kits
 - [ ] Potions
 - [ ] /trade
