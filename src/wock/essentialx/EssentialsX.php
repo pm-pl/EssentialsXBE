@@ -4,28 +4,33 @@ namespace wock\essentialx;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\Server;
-use wock\essentialx\{Commands\AnvilCommand,
-    Commands\AddWarpCommand,                     
+use wock\essentialx\{API\WarpAPI,
+    Commands\AddWarpCommand,
+    Commands\AnvilCommand,
     Commands\BackCommand,
     Commands\BanCommand,
     Commands\BanIPCommand,
     Commands\BanLookupCommand,
     Commands\CondenseCommand,
-    Commands\DeleteWarpCommand,                    
+    Commands\CreateHomeCommand,
+    Commands\DeleteWarpCommand,
     Commands\ExpCommand,
     Commands\FeedCommand,
     Commands\FlyCommand,
     Commands\GamemodeCommand,
     Commands\GiveCommand,
     Commands\HealCommand,
+    Commands\HomeCommand,
+    Commands\HomesCommand,
     Commands\ItemDBCommand,
     Commands\KitCommand,
     Commands\NearCommand,
     Commands\ReloadCommand,
+    Commands\RemoveHomeCommand,
     Commands\SpawnCommand,
     Commands\TempBanCommand,
     Commands\WarpCommand,
-    Commands\WarpsCommand,                     
+    Commands\WarpsCommand,
     Enchantments\BaneOfArthropodsEnchantment,
     Enchantments\FortuneEnchantment,
     Enchantments\LootingEnchantment,
@@ -33,7 +38,9 @@ use wock\essentialx\{Commands\AnvilCommand,
     Events\EssentialsXEvent,
     Commands\AfkCommand,
     Events\VanillaEnchanatmentEvent,
-    Managers\WarpManager};
+    Managers\HomeManager,
+    Managers\WarpManager,
+    Utils\DatabaseConnection};
 use pocketmine\utils\TextFormat;
 
 class EssentialsX extends PluginBase {
@@ -82,6 +89,7 @@ class EssentialsX extends PluginBase {
 
     public function registerCommands() {
         $config = new Config($this->getDataFolder() . "warps.json", Config::JSON);
+        $databaseConnection = new DatabaseConnection('db4free.net', 'startesting', 'startesting123', 'startesting', 3306);
         $this->getServer()->getCommandMap()->registerAll("essentialsx", [
             new AfkCommand($this),
             new AnvilCommand($this),
@@ -96,7 +104,7 @@ class EssentialsX extends PluginBase {
             new ReloadCommand(),
             new KitCommand(),
             new HealCommand(),
-            new BanLookupCommand($this).
+            new BanLookupCommand($this),
             new NearCommand($this),
             new FeedCommand(),
             new ItemDBCommand(),
@@ -106,6 +114,10 @@ class EssentialsX extends PluginBase {
             new AddWarpCommand($this, new WarpManager($config)),
             new WarpsCommand($this, new WarpManager($config)),
             new DeleteWarpCommand($this, new WarpManager($config)),
+            new HomeCommand($this, new HomeManager($databaseConnection)),
+            new RemoveHomeCommand($this, new HomeManager($databaseConnection)),
+            new CreateHomeCommand($this, new HomeManager($databaseConnection)),
+            new HomesCommand($this, new HomeManager($databaseConnection)),
         ]);
     }
 
