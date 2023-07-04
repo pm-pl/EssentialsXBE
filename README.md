@@ -66,7 +66,7 @@ By contributing to this project, you agree to release your contributions under t
 - [ ] Economy
 - [x] Warps
 - [ ] Convert Warps to use SQL
-- [ ] Convert Homes to use SQL
+- [x] Convert Homes to use SQL
 - [x] Homes
 - [ ] Make homes async
 - [ ] TPA's
