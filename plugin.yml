@@ -51,3 +51,11 @@ permissions:
     default: op
   essentialsx.near:
     default: op
+  essentialsx.warp:
+    default: true
+  essentialsx.warp.other:
+    default: op
+  essentialsx.addwarp:
+    default: op
+  essentialsx.deletewarp:
+    default: op
