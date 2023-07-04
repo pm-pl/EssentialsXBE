@@ -59,3 +59,9 @@ permissions:
     default: op
   essentialsx.deletewarp:
     default: op
+    essentialsx.home:
+    default: true
+  essentialsx.removehome:
+    default: true
+  essentialsx.sethome:
+    default: true  
