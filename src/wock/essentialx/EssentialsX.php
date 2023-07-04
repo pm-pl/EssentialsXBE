@@ -5,11 +5,13 @@ namespace wock\essentialx;
 use pocketmine\plugin\PluginBase;
 use pocketmine\Server;
 use wock\essentialx\{Commands\AnvilCommand,
+    Commands\AddWarpCommand,                     
     Commands\BackCommand,
     Commands\BanCommand,
     Commands\BanIPCommand,
     Commands\BanLookupCommand,
     Commands\CondenseCommand,
+    Commands\DeleteWarpCommand,                    
     Commands\ExpCommand,
     Commands\FeedCommand,
     Commands\FlyCommand,
@@ -22,13 +24,16 @@ use wock\essentialx\{Commands\AnvilCommand,
     Commands\ReloadCommand,
     Commands\SpawnCommand,
     Commands\TempBanCommand,
+    Commands\WarpCommand,
+    Commands\WarpsCommand,                     
     Enchantments\BaneOfArthropodsEnchantment,
     Enchantments\FortuneEnchantment,
     Enchantments\LootingEnchantment,
     Enchantments\SmiteEnchantment,
     Events\EssentialsXEvent,
     Commands\AfkCommand,
-    Events\VanillaEnchanatmentEvent};
+    Events\VanillaEnchanatmentEvent,
+    Managers\WarpManager};
 use pocketmine\utils\TextFormat;
 
 class EssentialsX extends PluginBase {
@@ -37,6 +42,12 @@ class EssentialsX extends PluginBase {
     private static EssentialsX $instance;
 
     public const NOPERMISSION = TextFormat::DARK_RED . "You do not have access to that command.";
+
+        /** @var WarpAPI */
+    private WarpAPI $api;
+
+    /** @var WarpManager */
+    private WarpManager $warpManager;
     
     public function onLoad(): void
     {
@@ -59,6 +70,9 @@ class EssentialsX extends PluginBase {
         $this->unregisterCommands();
         $this->registerCommands();
         $this->registerEvents();
+        $config = new Config($this->getDataFolder() . "warps.json", Config::JSON);
+        $this->api = new WarpAPI($config);
+        $this->warpManager = new WarpManager($config);
     }
 
     public function onDisable(): void
@@ -67,6 +81,7 @@ class EssentialsX extends PluginBase {
     }
 
     public function registerCommands() {
+        $config = new Config($this->getDataFolder() . "warps.json", Config::JSON);
         $this->getServer()->getCommandMap()->registerAll("essentialsx", [
             new AfkCommand($this),
             new AnvilCommand($this),
@@ -87,6 +102,10 @@ class EssentialsX extends PluginBase {
             new ItemDBCommand(),
             new GiveCommand(),
             //new TempBanCommand($this),
+            new WarpCommand($this, new WarpManager($config)),
+            new AddWarpCommand($this, new WarpManager($config)),
+            new WarpsCommand($this, new WarpManager($config)),
+            new DeleteWarpCommand($this, new WarpManager($config)),
         ]);
     }
 
