@@ -68,7 +68,7 @@ class WarpCommand extends Command implements PluginOwned {
             }
         }
 
-        if (count($args) < 2) {
+        if (count($args) <= 2) {
             $sender->sendMessage(TextFormat::RED . "Usage: /warp <warp-name> <player>");
             return false;
         }
