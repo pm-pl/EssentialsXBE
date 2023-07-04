@@ -67,7 +67,8 @@ By contributing to this project, you agree to release your contributions under t
 - [x] Warps
 - [ ] Convert Warps to use SQL
 - [ ] Convert Homes to use SQL
-- [ ] Homes
+- [x] Homes
+- [ ] Make homes async
 - [ ] TPA's
 - [ ] Fix /anvil
 - [ ] Fix /back
