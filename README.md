@@ -60,9 +60,13 @@ By contributing to this project, you agree to release your contributions under t
 ## To Do
 
 - [ ] Add Timed Teleport
-- [ ] API's
+- [ ] Home API
+- [x] Warp API (untested)
+- [ ] Pemrissions API
 - [ ] Economy
-- [ ] Warps
+- [x] Warps
+- [ ] Convert Warps to use SQL
+- [ ] Convert Homes to use SQL
 - [ ] Homes
 - [ ] TPA's
 - [ ] Fix /anvil
