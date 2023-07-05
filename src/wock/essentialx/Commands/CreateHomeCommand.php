@@ -6,7 +6,6 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginOwned;
-use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 use wock\essentialx\EssentialsX;
 use wock\essentialx\Managers\HomeManager;
