@@ -4,7 +4,7 @@ This is an unofficial port of the popular EssentialsX plugin for PocketMine-MP, 
 
 ## Under Development
 
-This plugin is still under very heavy development, if you want to experiment with this, please use this source code along with [DevTools](https://poggit.pmmp.io/p/DevTools) so that this plugin can properly run as Poggit PHAR compiler currently breaks the plugin.
+This plugin is still under very heavy development, if you want to experiment with this, please use this source code along with [DevTools](https://poggit.pmmp.io/p/DevTools) so that this plugin can properly run, as Poggit PHAR compiler currently breaks the plugin.
 
 ## Features
 
