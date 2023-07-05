@@ -9,6 +9,7 @@ use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
 use pocketmine\world\Position;
 use wock\essentialx\Tasks\Homes\CreateHomeTask;
+use wock\essentialx\Tasks\Homes\TeleportToHomeTask;
 use wock\essentialx\Utils\DatabaseConnection;
 
 class HomeManager
@@ -53,7 +54,7 @@ class HomeManager
     /**
      * @throws \Exception
      */
-    public function removeHome(Player $player, string $homeName)
+    public function removeHome(Player $player, string $homeName): void
     {
         $uuid = $player->getUniqueId()->toString();
 
@@ -83,11 +84,13 @@ class HomeManager
     {
         $uuid = $player->getUniqueId()->toString();
 
-        $query = "SELECT * FROM homes WHERE player_uuid = ?";
-        $result = $this->database->query($query, [$uuid]);
+        $statement = $this->database->prepareStatement("SELECT home_name, x, y, z, world FROM homes WHERE player_uuid = ?");
+        $statement->bind_param("s", $uuid);
+        $statement->execute();
+        $result = $statement->get_result();
 
         $homes = [];
-        while ($row = $result->fetch_array()) {
+        while ($row = $result->fetch_assoc()) {
             $homes[$row['home_name']] = [
                 'x' => $row['x'],
                 'y' => $row['y'],
@@ -96,8 +99,11 @@ class HomeManager
             ];
         }
 
+        $statement->close();
+
         return $homes;
     }
+
 
     /**
      * @throws \Exception
@@ -106,33 +112,11 @@ class HomeManager
     {
         $home = $this->getHome($player, $homeName);
         if ($home !== null) {
-            $x = (int) $home['x'];
-            $y = (int) $home['y'];
-            $z = (int) $home['z'];
-            $worldName = $home['world'];
-
-            $world = Server::getInstance()->getWorldManager()->getWorldByName($worldName);
-            if ($world !== null) {
-                $position = new Position($x, $y, $z, $world);
-                $player->teleport($position);
-            }
-
+            $task = new TeleportToHomeTask($player->getName(), $homeName, $home);
+            Server::getInstance()->getAsyncPool()->submitTask($task);
             return true;
         }
 
         return false;
-    }
-
-    public function createHomeAsync(Player $player, string $homeName) {
-        $uuid = $player->getUniqueId()->toString();
-        $x = $player->getPosition()->getFloorX();
-        $y = $player->getPosition()->getFloorY();
-        $z = $player->getPosition()->getFloorZ();
-        $world = $player->getWorld()->getFolderName();
-
-        $task = new CreateHomeTask($uuid, $homeName, $x, $y, $z, $world);
-        Server::getInstance()->getAsyncPool()->submitTask($task);
-
-        $player->sendMessage(TextFormat::GREEN . "Home creation in progress. Please wait...");
     }
 }
