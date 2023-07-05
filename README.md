@@ -88,3 +88,5 @@ By contributing to this project, you agree to release your contributions under t
 - [x] Make Fly messages configurable
 - [x] Move messages into a messages.yml configuration
 - [x] Move kits into a separate kits.yml configuration
+- [ ] Make DB configurable for own server use
+
