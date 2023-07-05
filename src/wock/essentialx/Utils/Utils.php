@@ -7,6 +7,7 @@ use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\network\mcpe\protocol\SpawnParticleEffectPacket;
 use pocketmine\player\Player;
 use pocketmine\utils\Config;
+use wock\essentialx\EssentialsX;
 
 class Utils {
 
