@@ -1,6 +1,6 @@
 <?php
 
-namespace wock\essentialx\Tasks\Homes;
+namespace wock\essentialx\Tasks;
 
 use pocketmine\scheduler\AsyncTask;
 use wock\essentialx\Utils\DatabaseConnection;
