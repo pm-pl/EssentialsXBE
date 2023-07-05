@@ -2,6 +2,10 @@
 
 This is an unofficial port of the popular EssentialsX plugin for PocketMine-MP, a Minecraft: Bedrock Edition server software. EssentialsX is a comprehensive plugin that provides essential commands and features for server administration and player convenience.
 
+## Under Development
+
+This plugin is still under very heavy development, if you want to experiment with this, please use this source code along with [DevTools](https://poggit.pmmp.io/p/DevTools) so that this plugin can properly run as Poggit PHAR compiler currently breaks the plugin.
+
 ## Features
 
 - Core commands: Includes essential commands such as `/help`, `/teleport`, `/gamemode`, `/ptime`, `/weather`, etc. 
