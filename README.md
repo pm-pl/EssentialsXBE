@@ -68,7 +68,9 @@ By contributing to this project, you agree to release your contributions under t
 - [ ] Convert Warps to use SQL
 - [x] Convert Homes to use SQL
 - [x] Homes
-- [ ] Make homes async
+- [x] Make homes async
+- [ ] Make home TP faster
+- [ ] Make getAllHomes method faster
 - [ ] TPA's
 - [ ] Fix /anvil
 - [ ] Fix /back
