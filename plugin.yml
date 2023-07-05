@@ -51,6 +51,8 @@ permissions:
     default: op
   essentialsx.near:
     default: op
+  essentialsx.feed:
+    default: op
   essentialsx.warp:
     default: true
   essentialsx.warp.other:
@@ -59,9 +61,13 @@ permissions:
     default: op
   essentialsx.deletewarp:
     default: op
-    essentialsx.home:
+  essentialsx.home:
     default: true
   essentialsx.removehome:
     default: true
   essentialsx.sethome:
-    default: true  
+    default: true
+  essentialsx.itemdb:
+    default: op
+  essentialsx.give:
+    default: op
