@@ -33,7 +33,7 @@ class CreateHomeCommand extends Command implements PluginOwned {
      */
     public function execute(CommandSender $sender, string $commandLabel, array $args): bool {
         if (!$sender instanceof Player) {
-            $sender->sendMessage(TextFormat::RED . "This command can only be used in-game.");
+            $sender->sendMessage("This command can only be used in-game.");
             return false;
         }
 
@@ -45,7 +45,15 @@ class CreateHomeCommand extends Command implements PluginOwned {
         $homeName = $args[0];
         $player = $sender;
 
-        $this->homeManager->createHome($player, $homeName);
+        $x = $player->getPosition()->getFloorX();
+        $y = $player->getPosition()->getFloorY();
+        $z = $player->getPosition()->getFloorZ();
+        $world = $player->getWorld()->getFolderName();
+
+        Server::getInstance()->getAsyncPool()->submitTask(new CreateHomeTask($player->getUniqueId()->toString(), $homeName, $x, $y, $z, $world));
+
+        $sender->sendMessage(TextFormat::GREEN . "Successfully created home '{$homeName}'!");
+
         return true;
     }
 
