@@ -17,10 +17,10 @@ use pocketmine\network\mcpe\protocol\types\entity\EntityIds;
 use pocketmine\player\Player;
 use pocketmine\Server;
 use wock\essentialx\Enchantments\BaneOfArthropodsEnchantment;
+use wock\essentialx\Enchantments\DepthStriderEnchantment;
 use wock\essentialx\Enchantments\FortuneEnchantment;
 use wock\essentialx\Enchantments\LootingEnchantment;
 use wock\essentialx\Enchantments\SmiteEnchantment;
-use wock\essentialx\Enchantments\DepthStriderEnchant;
 use wock\essentialx\Utils\Utils;
 
 class VanillaEnchanatmentEvent implements Listener {
