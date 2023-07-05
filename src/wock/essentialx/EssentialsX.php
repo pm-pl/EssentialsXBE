@@ -65,7 +65,7 @@ class EssentialsX extends PluginBase {
             new LootingEnchantment(),
             new SmiteEnchantment(),
             new BaneOfArthropodsEnchantment(),
-            new DepthStriderEnchantment
+            new DepthStriderEnchantment()
         ];
         foreach ($enchants as $enchant) {
             EnchantmentIdMap::getInstance()->register($enchant->getMcpeId(), $enchant);
