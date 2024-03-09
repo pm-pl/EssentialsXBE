@@ -14,41 +14,51 @@ use pocketmine\math\Vector3;
 use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
+use wock\essentialx\EssentialsX;
+use wock\essentialx\Player\PlayerManager;
 use wock\essentialx\Utils\Utils;
 
-class EssentialsXEvent implements Listener {
+class EssentialsXEvent implements Listener
+{
 
     private array $lastDeathPositions = [];
 
     private array $lastTeleportPositions = [];
 
-    public function onJoin(PlayerJoinEvent $event): void {
+    /**
+     * @throws \JsonException
+     */
+    public function onLogin(PlayerLoginEvent $event)
+    {
+        $player = $event->getPlayer();
+        if (PlayerManager::getInstance()->getSession($player) === null) {
+            PlayerManager::getInstance()->createSession($player);
+        }
+    }
+
+    public function onJoin(PlayerJoinEvent $event): void
+    {
         $player = $event->getPlayer();
         $displayname = $player->getDisplayName();
         $nametag = $player->getNameTag();
         $name = $player->getName();
-        $config = Utils::getEngMsgConfig();
+        $config = Utils::getConfiguration(EssentialsX::getInstance(), "messages-eng.yml");
 
         $joinConnect = $config->getNested("join.connect", "&r&a{nametag} has joined the server!");
-        $joinConnect = str_replace("{name}", $name, $joinConnect);
-        $joinConnect = str_replace("{display_name}", $displayname, $joinConnect);
-        $joinConnect = str_replace("{nametag}", $nametag, $joinConnect);
-
-        $event->setJoinMessage(TextFormat::colorize($joinConnect));
+        $event->setJoinMessage(TextFormat::colorize(str_replace(["{nametag}", "{display_name}", "{name}"], [$nametag, $displayname, $name], $joinConnect)));
 
         $joinMessage = $config->getNested("join.messages");
         $messages = [];
 
         if ($joinMessage !== null) {
-            $messages = str_split($joinMessage, "\n");
+            foreach ($messages as $message) {
+                $player->sendMessage(TextFormat::colorize(str_replace(["{nametag}", "{display_name}", "{name}",], [$nametag, $displayname, $name], $message)));
+            }
         }
 
-        foreach ($messages as $message) {
-            $message = str_replace("{name}", $name, $message);
-            $message = str_replace("{display_name}", $displayname, $message);
-            $message = str_replace("{nametag}", $nametag, $message);
-            $player->sendMessage(TextFormat::colorize($message));
-        }
+
+        PlayerManager::getInstance()->getSession($player)->setConnected(true);
+
     }
 
     public function onQuit(PlayerQuitEvent $event): void{
@@ -57,14 +67,12 @@ class EssentialsXEvent implements Listener {
         $nametag = $player->getNameTag();
         $name = $player->getName();
 
-        $config = Utils::getEngMsgConfig();
+        $config = Utils::getConfiguration(EssentialsX::getInstance(), "messages-eng.yml");
 
         $quitMessage = $config->getNested("quit.disconnect", "&r&c{nametag} has disconnected from the server!");
-        $quitMessage = str_replace("{name}", $name, $quitMessage);
-        $quitMessage = str_replace("{display_name}", $displayname, $quitMessage);
-        $quitMessage = str_replace("{nametag}", $nametag, $quitMessage);
+        PlayerManager::getInstance()->getSession($player)->setConnected(false);
 
-        $event->setQuitMessage(TextFormat::colorize($quitMessage));
+        $event->setQuitMessage(TextFormat::colorize(str_replace(["{nametag}", "{display_name}", "{name}"], [$nametag, $displayname, $name], $quitMessage)));
     }
 
     public function onPlayerLogin(PlayerLoginEvent $event): void {
