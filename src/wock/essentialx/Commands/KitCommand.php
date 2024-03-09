@@ -45,8 +45,10 @@ class KitCommand extends Command implements PluginOwned
             return false;
         }
 
-        $config = Utils::getConfig();
-        $kits = $config->getNested("kits", []);
+        $session = EssentialsX::getSessionManager()->getSession($sender);
+        $config = Utils::getConfiguration(EssentialsX::getInstance(), "config.yml");
+        $kitConfig = Utils::getConfiguration(EssentialsX::getInstance(), "kits.yml");
+        $kits = $kitConfig->getNested("kits", []);
 
         $itemParser = StringToItemParser::getInstance();
         $enchantmentParser = StringToEnchantmentParser::getInstance();
@@ -89,13 +91,11 @@ class KitCommand extends Command implements PluginOwned
                 $kitData = $kits[$kitName];
                 $kitItems = $kitData["items"] ?? [];
 
-                if ($this->hasKitCooldown($sender, $kitName)) {
-                    $remainingCooldown = $this->getKitCooldown($sender, $kitName) - time();
-                    if ($remainingCooldown > 0) {
-                        $remainingTime = Utils::formatTime($remainingCooldown);
-                        $sender->sendMessage(TextFormat::GOLD . "The kit '" . TextFormat::RED . $kitName . TextFormat::GOLD . "' is on cooldown. You can use it again in " . TextFormat::RED . $remainingTime . TextFormat::GOLD . ".");
-                        return false;
-                    }
+                if ($session->getCooldown($kitName) !== null || $session !== 0) {
+                    $remainingCooldown = $session->getCooldown($kitName);
+                    $remainingTime = Utils::translateTime($remainingCooldown);
+                    $sender->sendMessage(TextFormat::GOLD . "The kit '" . TextFormat::RED . $kitName . TextFormat::GOLD . "' is on cooldown. You can use it again in " . TextFormat::RED . $remainingTime . TextFormat::GOLD . ".");
+                    return false;
                 }
 
                 $inventory = $player->getInventory();
@@ -143,7 +143,7 @@ class KitCommand extends Command implements PluginOwned
                     }
                 }
 
-                $this->setKitCooldown($sender, $kitName);
+                $session->addCooldown($kitName, Utils::getConfiguration(EssentialsX::getInstance(), "kits.yml")->getNested("kits.$kitName.cooldown"));
 
                 $sender->sendMessage(TextFormat::GOLD . "Kit '" . TextFormat::RED . $kitName . TextFormat::GOLD . "' has been given to " . TextFormat::RED . $playerName);
                 break;
@@ -159,14 +159,13 @@ class KitCommand extends Command implements PluginOwned
                 $kitData = $kits[$kitName];
                 $kitItems = $kitData["items"] ?? [];
 
-                if ($this->hasKitCooldown($sender, $kitName)) {
-                    $remainingCooldown = $this->getKitCooldown($sender, $kitName) - time();
-                    if ($remainingCooldown > 0) {
-                        $remainingTime = Utils::formatTime($remainingCooldown);
-                        $sender->sendMessage(TextFormat::GOLD . "The kit '" . TextFormat::RED . $kitName . TextFormat::GOLD . "' is on cooldown. You can use it again in " . TextFormat::RED . $remainingTime . TextFormat::GOLD . ".");
-                        return false;
-                    }
+                if ($session->getCooldown($kitName) !== null && $session->getCooldown($kitName) > 0) {
+                    $remainingCooldown = $session->getCooldown($kitName);
+                    $remainingTime = Utils::translateTime($remainingCooldown);
+                    $sender->sendMessage(TextFormat::GOLD . "The kit '" . TextFormat::RED . $kitName . TextFormat::GOLD . "' is on cooldown. You can use it again in " . TextFormat::RED . $remainingTime . TextFormat::GOLD . ".");
+                    return false;
                 }
+
                 $inventory = $sender->getInventory();
                 foreach ($kitItems as $itemData) {
                     $itemString = $itemData["item"] ?? "";
@@ -212,68 +211,15 @@ class KitCommand extends Command implements PluginOwned
                     }
                 }
 
-                $this->setKitCooldown($sender, $kitName);
+                $cooldown = Utils::getConfiguration(EssentialsX::getInstance(), "kits.yml")->getNested("kits.$kitName.cooldown");
+                $session->addCooldown($kitName, $cooldown ?? 0);
 
                 $sender->sendMessage(TextFormat::GOLD . "Kit '" . TextFormat::RED . $kitName . TextFormat::GOLD . "' has been given.");
                 break;
+
         }
 
         return true;
-    }
-
-    private function getKitCooldown(Player $player, string $kitName): int
-    {
-        $cooldowns = $this->getKitCooldowns($player);
-        return $cooldowns[$kitName] ?? 0;
-    }
-
-    private function setKitCooldown(Player $player, string $kitName): void
-    {
-        $cooldowns = $this->getKitCooldowns($player);
-        $cooldownDuration = $this->getKitCooldownTime($player, $kitName);
-        $expirationTime = time() + $cooldownDuration;
-        $cooldowns[$kitName] = $expirationTime;
-        $this->saveKitCooldowns($player, $cooldowns);
-    }
-
-    private function hasKitCooldown(Player $player, string $kitName): bool
-    {
-        $cooldowns = $this->getKitCooldowns($player);
-        $expirationTime = $cooldowns[$kitName] ?? 0;
-        $currentTime = time();
-        $remainingCooldown = $expirationTime - $currentTime;
-
-        return $remainingCooldown > 0;
-    }
-
-    private function getKitCooldownTime(Player $player, string $kitName): int
-    {
-        $config = EssentialsX::getInstance()->getConfig();
-        $kits = $config->getNested("kits", []);
-
-        $kitData = $kits[$kitName] ?? [];
-        $cooldown = $kitData["cooldown"] ?? 0;
-
-        return $cooldown;
-    }
-
-
-    private function getKitCooldowns(Player $player): array
-    {
-        $name = strtolower($player->getName());
-
-        $previousCooldowns = [];
-
-        $cooldowns = $this->kitCooldowns[$name] ?? [];
-        $cooldowns = array_merge($previousCooldowns, $cooldowns);
-
-        return $cooldowns;
-    }
-
-    private function saveKitCooldowns(Player $player, array $cooldowns): void
-    {
-        $name = strtolower($player->getName());
-        $this->kitCooldowns[$name] = $cooldowns;
     }
 
     public function getOwningPlugin(): EssentialsX
