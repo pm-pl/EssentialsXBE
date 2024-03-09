@@ -54,25 +54,18 @@ class BanCommand extends Command implements PluginOwned {
         $senderName = $sender->getName();
         $banReason = isset($args[1]) ? implode(" ", array_slice($args, 1)) : "default ban reason";
 
-        $config = Utils::getEngMsgConfig();
+        $config = Utils::getConfiguration(EssentialsX::getInstance(), "messages-eng.yml");
 
         $banFormat = $config->get("ban-format", "Ban Format");
-        $banFormat = str_replace("&", "§", $banFormat);
-        $banFormat = str_replace("{reason}", $banReason, $banFormat);
-        $banFormat = str_replace("{sender}", $senderName, $banFormat);
-        $banFormat = str_replace("{user}", $user->getName(), $banFormat);
 
         Server::getInstance()->getNameBans()->addBan($user->getName(), $banReason, null, $senderName);
-        $user->kick(TextFormat::colorize($banFormat));
+        $user->kick(TextFormat::colorize(str_replace(["{user}", "{sender}", "{reason}"], [$user->getName(), $senderName, $banReason], $banFormat)));
 
         $banMessage = $config->get("ban-message", "Player banned message");
-        $banMessage = str_replace("&", "§", $banMessage);
-        $banMessage = str_replace("{sender}", $senderName, $banMessage);
-        $banMessage = str_replace("{user}", $user->getName(), $banMessage);
 
         Server::getInstance()->getLogger()->info($senderName . " has banned " . $user->getName());
 
-        Server::getInstance()->broadcastMessage($banMessage);
+        Server::getInstance()->broadcastMessage(TextFormat::colorize(str_replace(["{user}", "{sender}"], [$user->getName(), $senderName], $banMessage)));
 
         return true;
     }
