@@ -6,10 +6,27 @@ use pocketmine\entity\Entity;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\network\mcpe\protocol\SpawnParticleEffectPacket;
 use pocketmine\player\Player;
+use pocketmine\plugin\PluginBase;
+use pocketmine\Server;
 use pocketmine\utils\Config;
+use pocketmine\utils\TextFormat;
 use wock\essentialx\EssentialsX;
 
 class Utils {
+
+    // PLAYYER QUERY
+    public const PLAYERS_INIT   = "players.initialize";
+    public const PLAYERS_SELECT = "players.select";
+    public const PLAYERS_CREATE = "players.create";
+    public const PLAYERS_UPDATE = "players.update";
+    public const PLAYERS_DELETE = "players.delete";
+
+    // HOMES QUERY
+    public const HOMES_INIT   = "players.homes.initialize";
+    public const HOMES_SELECT = "players.homes.select";
+    public const HOMES_CREATE = "players.homes.create";
+    public const HOMES_UPDATE = "players.homes.update";
+    public const HOMES_DELETE = "players.homes.delete";
 
     /**
      * @param int $level
@@ -31,24 +48,55 @@ class Utils {
         if ($forceOff) {
             $player->setAllowFlight(false);
             $player->setFlying(false);
-            $player->resetFallDistance(); 
-            $message = self::getEngMsgConfig()->getNested("fly.disabled", "§cYou can no longer fly.");
-            $message = str_replace("&", "§", $message);
-            $player->sendMessage($message);
+            $player->resetFallDistance();
+            $message = self::getConfiguration(EssentialsX::getInstance(), "messages-eng.yml")->getNested("fly.disabled", "§cYou can no longer fly.");
+            $player->sendMessage(TextFormat::colorize($message));
         } else {
             if (!$player->getAllowFlight()) {
                 $player->setAllowFlight(true);
-                $message = self::getEngMsgConfig()->getNested("fly.enabled", "§sYou can now fly.");
-                $message = str_replace("&", "§", $message);
-                $player->sendMessage($message);    
+                $message = self::getConfiguration(EssentialsX::getInstance(), "messages-eng.yml")->getNested("fly.enabled", "§sYou can now fly.");
+                $player->sendMessage(TextFormat::colorize($message));
             } else {
                 $player->setAllowFlight(false);
                 $player->setFlying(false);
-                $player->resetFallDistance(); 
-                $message = self::getEngMsgConfig()->getNested("fly.disabled", "§cYou can no longer fly.");
-                $message = str_replace("&", "§", $message);
-                $player->sendMessage($message);            }
+                $player->resetFallDistance();
+                $message = self::getConfiguration(EssentialsX::getInstance(), "messages-eng.yml")->getNested("fly.disabled", "§cYou can no longer fly.");
+                $player->sendMessage(TextFormat::colorize($message));
+            }
         }
+    }
+
+    /**
+     * Returns an online player whose name begins with or equals the given string (case insensitive).
+     * The closest match will be returned, or null if there are no online matches.
+     *
+     * @param string $name The prefix or name to match.
+     * @return Player|null The matched player or null if no match is found.
+     */
+    public static function getPlayerByPrefix(string $name): ?Player {
+        $found = null;
+        $name = strtolower($name);
+        $delta = PHP_INT_MAX;
+
+        /** @var Player[] $onlinePlayers */
+        $onlinePlayers = Server::getInstance()->getOnlinePlayers();
+
+        foreach ($onlinePlayers as $player) {
+            if (stripos($player->getName(), $name) === 0) {
+                $curDelta = strlen($player->getName()) - strlen($name);
+
+                if ($curDelta < $delta) {
+                    $found = $player;
+                    $delta = $curDelta;
+                }
+
+                if ($curDelta === 0) {
+                    break;
+                }
+            }
+        }
+
+        return $found;
     }
 
     /**
@@ -95,47 +143,56 @@ class Utils {
         }
     }
 
-        public static function formatTime(int $seconds): string
+    public static function translateTime(int $seconds): string
     {
-        $years = floor($seconds / 31536000);
-        $months = floor(($seconds % 31536000) / 2592000);
-        $days = floor((($seconds % 31536000) % 2592000) / 86400);
-        $hours = floor(((($seconds % 31536000) % 2592000) % 86400) / 3600);
-        $minutes = floor((((($seconds % 31536000) % 2592000) % 86400) % 3600) / 60);
-        $seconds = (((($seconds % 31536000) % 2592000) % 86400) % 3600) % 60;
+        $timeUnits = [
+            'w' => 60 * 60 * 24 * 7,
+            'd' => 60 * 60 * 24,
+            'h' => 60 * 60,
+            'm' => 60,
+            's' => 1,
+        ];
 
-        $timeString = "";
-        if ($years > 0) {
-            $timeString .= $years . "y ";
-        }
-        if ($months > 0) {
-            $timeString .= $months . "mo ";
-        }
-        if ($days > 0) {
-            $timeString .= $days . "d ";
-        }
-        if ($hours > 0) {
-            $timeString .= $hours . "h ";
-        }
-        if ($minutes > 0) {
-            $timeString .= $minutes . "m ";
-        }
-        if ($seconds > 0) {
-            $timeString .= $seconds . "s";
+        $parts = [];
+
+        foreach ($timeUnits as $unit => $value) {
+            if ($seconds >= $value) {
+                $amount = floor($seconds / $value);
+                $seconds %= $value;
+                $parts[] = $amount . $unit;
+            }
         }
 
-        return trim($timeString);
+        return implode(', ', $parts);
     }
 
-    public static function getConfig(): Config {
-        return new Config(EssentialsX::getInstance()->getDataFolder() . "config.yml", Config::YAML);
-    }
+    public static function getConfiguration(PluginBase $plugin, string $fileName): Config {
+        $pluginFolder = $plugin->getDataFolder();
+        $filePath = $pluginFolder . $fileName;
 
-    public static function getEngMsgConfig(): Config {
-        return new Config(EssentialsX::getInstance()->getDataFolder() . "messages-eng", Config::YAML);
-    }
+        $config = null;
 
-    public static function getKitConfig(): Config {
-        return new Config(EssentialsX::getInstance()->getDataFolder() . "kits.yml", Config::YAML);
+        if (!file_exists($filePath)) {
+            $plugin->getLogger()->warning("Configuration file '$fileName' not found.");
+        } else {
+            $extension = pathinfo($fileName, PATHINFO_EXTENSION);
+
+            switch ($extension) {
+                case 'yml':
+                case 'yaml':
+                    $config = new Config($filePath, Config::YAML);
+                    break;
+
+                case 'json':
+                    $config = new Config($filePath, Config::JSON);
+                    break;
+
+                default:
+                    $plugin->getLogger()->warning("Unsupported configuration file format for '$fileName'.");
+                    break;
+            }
+        }
+
+        return $config;
     }
 }
