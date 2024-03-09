@@ -43,14 +43,24 @@ use wock\essentialx\{API\WarpAPI,
     Events\VanillaEnchanatmentEvent,
     Managers\HomeManager,
     Managers\WarpManager,
-    Utils\DatabaseConnection};
+    Player\PlayerManager,
+    Utils\DatabaseConnection,
+    Utils\Utils};
 use pocketmine\utils\Config;
+use pocketmine\utils\SingletonTrait;
 use pocketmine\utils\TextFormat;
+use poggit\libasynql\DataConnector;
+use poggit\libasynql\libasynql;
 
 class EssentialsX extends PluginBase {
 
-    /** @var EssentialsX */
-    private static EssentialsX $instance;
+    use SingletonTrait;
+
+    public static DataConnector $connector;
+
+    public static PlayerManager $manager;
+
+    public static HomeManager $homeManager;
 
     public const NOPERMISSION = TextFormat::DARK_RED . "You do not have access to that command.";
 
@@ -62,9 +72,8 @@ class EssentialsX extends PluginBase {
 
     public function onLoad(): void
     {
-        self::$instance = $this;
+        self::setInstance($this);
         $enchants = [
-            new FortuneEnchantment(),
             new LootingEnchantment(),
             new SmiteEnchantment(),
             new BaneOfArthropodsEnchantment(),
@@ -88,11 +97,30 @@ class EssentialsX extends PluginBase {
         $config = new Config($this->getDataFolder() . "warps.json", Config::JSON);
         $this->api = new WarpAPI($config);
         $this->warpManager = new WarpManager($config);
+        $settings = [
+            "type" => "sqlite",
+            "sqlite" => ["file" => "sqlite.sql"],
+            "worker-limit" => 2
+        ];
+
+        self::$connector = libasynql::create($this, $settings, ["sqlite" => "sqlite.sql"]);
+        self::$connector->executeGeneric(Utils::PLAYERS_INIT);
+        self::$connector->executeGeneric(Utils::HOMES_INIT);
+
+        self::$connector->waitAll();
+
+        self::$manager = new PlayerManager($this);
+        //self::$homeManager = new HomeManager($this, 3);
+        $this->saveResource("messages-eng.yml");
+        $this->saveResource("kits.yml");
+
     }
 
     public function onDisable(): void
     {
-
+        if (isset($this->connector)) {
+            $this->connector->close();
+        }
     }
 
     /**
@@ -100,7 +128,6 @@ class EssentialsX extends PluginBase {
      */
     public function registerCommands() {
         $config = new Config($this->getDataFolder() . "warps.json", Config::JSON);
-        $databaseConnection = new DatabaseConnection('db4free.net', 'startesting', 'startesting123', 'startesting', 3306);
         $this->getServer()->getCommandMap()->registerAll("essentialsx", [
             new AfkCommand($this),
             new AnvilCommand($this),
@@ -125,10 +152,10 @@ class EssentialsX extends PluginBase {
             new AddWarpCommand($this, new WarpManager($config)),
             new WarpsCommand($this, new WarpManager($config)),
             new DeleteWarpCommand($this, new WarpManager($config)),
-            new HomeCommand($this, new HomeManager($databaseConnection)),
-            new RemoveHomeCommand($this, new HomeManager($databaseConnection)),
-            new CreateHomeCommand($this, new HomeManager($databaseConnection)),
-            new HomesCommand($this, new HomeManager($databaseConnection)),
+         //   new HomeCommand($this, new HomeManager()),
+          //  new RemoveHomeCommand($this, new HomeManager()),
+            //ew CreateHomeCommand($this, new HomeManager()),
+           // new HomesCommand($this, new HomeManager()),
         ]);
     }
 
@@ -145,9 +172,18 @@ class EssentialsX extends PluginBase {
         $pluginMngr->registerEvents(new VanillaEnchanatmentEvent(), $this);
     }
 
-    public static function getInstance(): EssentialsX
+    public static function getDatabase() : DataConnector
     {
-        return self::$instance;
+        return self::$connector;
+    }
+
+    public static function getSessionManager() : PlayerManager
+    {
+        return self::$manager;
+    }
+
+    public static function getHomeManager() : HomeManager {
+        return self::$homeManager;
     }
 
     /**
