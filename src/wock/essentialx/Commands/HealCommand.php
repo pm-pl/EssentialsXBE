@@ -7,6 +7,8 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
+use wock\essentialx\EssentialsX;
+use wock\essentialx\Utils\Utils;
 
 class HealCommand extends Command {
 
@@ -34,7 +36,9 @@ class HealCommand extends Command {
             return false;
         }
 
-        if (!$this->hasCooldown($sender)) {
+        $session = EssentialsX::getSessionManager()->getSession($sender);
+        $config = Utils::getConfiguration(EssentialsX::getInstance(), "config.yml");
+        if (!$session->getCooldown("heal")) {
             if ($playerName === $sender->getName()) {
                 $sender->setHealth($sender->getMaxHealth());
                 $sender->sendMessage(TextFormat::GREEN . "You have been healed.");
@@ -50,33 +54,11 @@ class HealCommand extends Command {
                 }
             }
 
-            $this->setCooldown($sender);
+            $session->addCooldown("heal", $config->getNested("cooldowns.heal"));
         } else {
-            $sender->sendMessage(TextFormat::RED . "You must wait " . $this->getCooldownTime($sender) . " seconds before using this command again.");
+            $sender->sendMessage(TextFormat::RED . "You must wait " . Utils::translateTime($session->getCooldown("heal")) . " before using this command again.");
         }
 
         return true;
     }
-    
-    private function hasCooldown(Player $player): bool
-    {
-        $name = strtolower($player->getName());
-
-        if(isset($this->cooldowns[$name]) && time() - $this->cooldowns[$name] < 60) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private function setCooldown(Player $player) {
-        $name = strtolower($player->getName());
-        $this->cooldowns[$name] = time();
-    }
-
-    private function getCooldownTime(Player $player) {
-        $name = strtolower($player->getName());
-        return 60 - (time() - $this->cooldowns[$name]);
-    }
-
 }
