@@ -34,7 +34,6 @@ class ItemDBCommand extends Command implements PluginOwned
 
         $hand = $sender->getInventory()->getItemInHand();
         $sender->sendMessage(TextFormat::GOLD . "Item: " . TextFormat::RED . $hand->getVanillaName());
-        $sender->sendMessage(TextFormat::GOLD . "ID: " . TextFormat::RED . $hand->getTypeId());
         if ($hand instanceof Durable) {
             $maxDurability = $hand->getMaxDurability();
             $currentDurability = $hand->getDamage();
