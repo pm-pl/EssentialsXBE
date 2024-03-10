@@ -90,7 +90,15 @@ class EssentialsX extends PluginBase {
      */
     public function onEnable(): void
     {
-        $this->saveDefaultConfig();
+        $config = $this->getConfig();
+        $currentVersion = $config->get("version");
+
+        if ($currentVersion === null || $currentVersion !== "1.0.0") {
+            $this->getLogger()->info($currentVersion === null ? "Updating configuration to new format" : "Updating configuration to version 1.0.0");
+            $this->saveOldConfig();
+            $this->saveDefaultConfig();
+
+        }
         $this->registerCommands();
         $this->unregisterCommands();
         $this->registerEvents();
@@ -191,6 +199,13 @@ class EssentialsX extends PluginBase {
      */
     public function getApi(): WarpAPI{
         return $this->api;
+    }
+
+    private function saveOldConfig(): void
+    {
+        $oldConfigPath = $this->getDataFolder() . "old_config.yml";
+        $this->saveResource("config.yml", false);
+        rename($this->getDataFolder() . "config.yml", $oldConfigPath);
     }
 }
 
