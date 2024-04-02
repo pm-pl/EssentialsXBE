@@ -172,24 +172,21 @@ class VanillaEnchanatmentEvent implements Listener {
     /**
      * @param PlayerMoveEvent $event
      */
-     public function onPlayerMove(PlayerMoveEvent $event): void 
+    public function onPlayerMove(PlayerMoveEvent $event): void
     {
         $player = $event->getPlayer();
         $item = $player->getArmorInventory()->getBoots();
         $depthStriderEnchantment = new DepthStriderEnchantment();
-
+        $speed = $player->getMovementSpeed();
+        
         if ($item !== null && $item->hasEnchantment(EnchantmentIdMap::getInstance()->fromId($depthStriderEnchantment->getMcpeId()))) {
-                        $level = $item->getEnchantmentLevel(EnchantmentIdMap::getInstance()->fromId($depthStriderEnchantment->getMcpeId()));
+            $level = $item->getEnchantmentLevel(EnchantmentIdMap::getInstance()->fromId($depthStriderEnchantment->getMcpeId()));
 
             if ($player->isSwimming()) {
-                $speed = 0.1 + ($level * 0.07);
+                $speed = 0.1 * (1 + 0.3333 * $level);
                 $player->setMovementSpeed($speed);
-            }
-            if ($player->isUnderwater()) {
-                $speed = 0.05 + ($level * 0.03);
-                $player->setMovementSpeed($speed);
-            } else {
-                $player->setMovementSpeed(0.1);
+            } elseif ($player->isUnderwater()) { // TODO: Reset the speed after being underwater
+                //$player->setMovementSpeed($speed);
             }
         }
     }
