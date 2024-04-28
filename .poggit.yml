@@ -5,4 +5,7 @@ branches:
 projects:
   EssentialsXBE:
     path: ""
+    libs:
+     - src: "poggit/libasynql/libasynql"
+       version: "^4.1.1"
 ...
